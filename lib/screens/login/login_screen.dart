@@ -45,7 +45,9 @@ class LoginScreen extends StatelessWidget {
                     primary: Colors.red,
                   ),
                   child: const Text('MASUK'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -56,7 +58,9 @@ class LoginScreen extends StatelessWidget {
                     primary: Colors.green,
                   ),
                   child: const Text('DAFTAR'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
