@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laundry_app/utils/routes.dart';
+import 'package:laundry_app/config/routes/routes.dart';
 
 void main() {
   runApp(MyApp());
