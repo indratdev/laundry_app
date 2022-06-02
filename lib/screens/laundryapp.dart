@@ -21,6 +21,11 @@ class LaundryApp extends StatelessWidget {
         "route": '/status',
         "icon": Icon(Icons.start),
       },
+      "Master": {
+        "title": "Master",
+        "route": '/mastertransaksi',
+        "icon": Icon(Icons.start),
+      },
       "Add Member": {
         "title": "Add Member",
         "route": '/addmember',
