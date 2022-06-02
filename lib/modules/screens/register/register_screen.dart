@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:laundry_app/core/auth/fireauth.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -10,6 +12,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  final _laundryNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  bool _isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +35,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: TextFormField(
+                    controller: _laundryNameController,
                     decoration: InputDecoration(
-                      hintText: "contoh : Susilo Bambang",
-                      labelText: "Nama Lengkap",
+                      hintText: "contoh : Happy Clean Laundry",
+                      labelText: "Nama Toko Laundry",
                       icon: const Icon(Icons.people),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0)),
@@ -45,6 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: TextFormField(
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: "Email",
@@ -61,39 +71,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.all(5.0),
+                //   child: TextFormField(
+                //     decoration: InputDecoration(
+                //       labelText: "Alamat",
+                //       icon: const Icon(Icons.directions),
+                //       border: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(5.0)),
+                //     ),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.all(5.0),
+                //   child: TextFormField(
+                //     keyboardType: TextInputType.number,
+                //     decoration: InputDecoration(
+                //       labelText: "Nomor Telpon",
+                //       hintText: "contoh : 0811xxx",
+                //       icon: const Icon(Icons.call),
+                //       border: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(5.0)),
+                //     ),
+                //     validator: (String? value) {
+                //       if (value == null || value.isEmpty) {
+                //         return 'No. Telpon tidak boleh kosong';
+                //       }
+                //       return null;
+                //     },
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "Alamat",
-                      icon: const Icon(Icons.directions),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: "Nomor Telpon",
-                      hintText: "contoh : 0811xxx",
-                      icon: const Icon(Icons.call),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'No. Telpon tidak boleh kosong';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextFormField(
+                    controller: _passwordController,
                     obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
                     decoration: InputDecoration(
@@ -115,9 +126,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     "DAFTAR",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     // if (_formKey.currentState.validate()) {}
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      User? user = await FireAuth.registerUsingEmailPassword(
+                          laundryName: _laundryNameController.text,
+                          email: _emailController.text,
+                          password: _passwordController.text);
+
+                      setState(() {
+                        _isProcessing = false;
+                      });
+
+                      if (user != null) {
+                        print("udah ada usernya");
+                        // Navigator.of(context).pushAndRemoveUntil(
+                        //   MaterialPageRoute(
+                        //     builder: (context) => ProfilePage(user: user),
+                        //   ),
+                        //   ModalRoute.withName('/'),
+                        // );
+                      }
+                    }
                   },
                 ),
               ],
