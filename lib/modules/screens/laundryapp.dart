@@ -23,7 +23,7 @@ class LaundryApp extends StatelessWidget {
       },
       "Master": {
         "title": "Master",
-        "route": '/mastertransaksi',
+        "route": '/master',
         "icon": Icon(Icons.start),
       },
       "Add Member": {
@@ -50,14 +50,21 @@ class LaundryApp extends StatelessWidget {
           scrollDirection: Axis.vertical,
           itemCount: menus.length,
           itemBuilder: (context, index) {
-            return Container(
-              color: Colors.blue,
-              child: Column(children: <Widget>[
-                menus.entries.elementAt(index).value['icon'],
-                Text(
-                  menus.entries.elementAt(index).key,
-                ),
-              ]),
+            return GestureDetector(
+              onTap: () {
+                String routes = menus.entries.elementAt(index).value['route'];
+                Navigator.pushNamed(context, routes);
+                // print(menus.entries.elementAt(index).value['route']);
+              },
+              child: Container(
+                color: Colors.blue,
+                child: Column(children: <Widget>[
+                  menus.entries.elementAt(index).value['icon'],
+                  Text(
+                    menus.entries.elementAt(index).key,
+                  ),
+                ]),
+              ),
             );
           },
         ));

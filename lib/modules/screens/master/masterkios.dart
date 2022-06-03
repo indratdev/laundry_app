@@ -17,14 +17,18 @@ class MasterKios extends StatelessWidget {
         child: const Text("+"),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('masterkios').snapshots(),
+        stream:
+            FirebaseFirestore.instance.collection('member-kios').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshots) {
           if (snapshots.hasData) {
             final datas = snapshots.data!.docs;
             return ListView.builder(
               itemCount: datas.length,
               itemBuilder: (context, index) {
-                return Text('data');
+                return ListTile(
+                  title: Text(datas[index]["name"]),
+                  subtitle: Text(datas[index]["address"]),
+                );
               },
             );
           } else {

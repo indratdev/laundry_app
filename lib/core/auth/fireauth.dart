@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:laundry_app/modules/models/member.dart';
 
 class FireAuth {
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseFirestore _fireInstance = FirebaseFirestore.instance;
+
+  // register
   static Future<User?> registerUsingEmailPassword({
     required String laundryName,
     required String email,
@@ -24,5 +30,22 @@ class FireAuth {
       print(e);
     }
     return user;
+  }
+
+  // add member kios
+  Future createMemberKios({required Member member}) async {
+    final docMember = _fireInstance.collection('member-kios');
+
+    final newMember = Member(
+      name: member.name,
+      address: member.address,
+      idKios: _auth.currentUser?.uid ?? "",
+      phoneNumber: member.phoneNumber,
+      description: member.description,
+    );
+
+    final json = newMember.toJson();
+
+    await docMember.add(json);
   }
 }
