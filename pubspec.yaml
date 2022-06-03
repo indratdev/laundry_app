@@ -27,25 +27,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-<<<<<<< HEAD
+  bloc: ^8.0.3
+  cloud_firestore: ^3.1.17
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.3.19
   firebase_core: ^1.17.1
-=======
-
-  bloc: ^8.0.3
-  cupertino_icons: ^1.0.2
->>>>>>> develop
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
-  firebase_auth: ^3.3.19
-  firebase_core: ^1.17.1
 
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
 dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:

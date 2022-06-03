@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:laundry_app/config/routes/routes.dart';
 
 class MenusModel {
   String name, title;
@@ -14,11 +13,13 @@ class MenusModel {
     required this.iconn,
   });
 
-  MenusModel getMainMenu() {
-    return MenusModel(
-        name: 'Transaksi',
-        title: 'Transaksi',
-        route: '/transaksi',
-        iconn: Icon(Icons.menu));
-  }
+  // MenusModel.fromJson(Map json) {
+  //   name:
+  //   json["name"];
+  //   title:
+  //   json["title"];
+  //   route:
+  //   json["route"];
+  //   icon
+  // }
 }
