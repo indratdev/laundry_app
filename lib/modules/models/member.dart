@@ -9,6 +9,16 @@ class Member {
     this.description = '',
   });
 
+  factory Member.fromJson(Map json) {
+    return Member(
+      name: json["name"] ?? '',
+      address: json["address"] ?? '',
+      description: json["description"] ?? '',
+      idKios: json["idkios"] ?? '',
+      phoneNumber: json["phoneNumber"] ?? '',
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         "id": idKios,
         "name": name,

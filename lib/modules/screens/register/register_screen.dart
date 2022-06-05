@@ -140,6 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       if (user != null) {
                         print("udah ada usernya");
+                        // showDialog(context: context, builder: builder)
                         // Navigator.of(context).pushAndRemoveUntil(
                         //   MaterialPageRoute(
                         //     builder: (context) => ProfilePage(user: user),
