@@ -1,10 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:laundry_app/core/auth/fireauth.dart';
+import 'package:laundry_app/utils/mixins/validation_mixin.dart';
+import 'package:laundry_app/widgets/simplewidget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  TextEditingController hpemail = TextEditingController();
-  TextEditingController pwd = TextEditingController();
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  final validMix = ValidationMixin();
+
+  TextEditingController hpemailController = TextEditingController();
+
+  TextEditingController pwdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -12,68 +26,124 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Laundry Login'),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: hpemail,
-                  decoration: const InputDecoration(
-                    labelText: 'No Hp atau Email',
-                    prefixIcon: Icon(
-                      Icons.email,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    controller: hpemailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(
+                        Icons.email,
+                      ),
                     ),
+                    validator: (String? value) {
+                      return validMix.validationEmail(value);
+                    },
                   ),
-                ),
-                TextField(
-                  controller: pwd,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: Icon(
-                      Icons.lock,
+                  TextFormField(
+                    controller: pwdController,
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: Icon(
+                        Icons.lock,
+                      ),
                     ),
+                    validator: (String? value) {
+                      return validMix.validateTxtFormField(value);
+                    },
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    primary: Colors.red,
-                  ),
-                  child: const Text('MASUK'),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/home');
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    primary: Colors.green,
-                  ),
-                  child: const Text('DAFTAR'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/register');
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/forgotpwd');
-                      },
-                      child: const Text('Lupa Password ?'),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      primary: Colors.red,
                     ),
-                  ],
-                )
-              ],
+                    child: const Text('MASUK'),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        Map<String, dynamic> result =
+                            await FireAuth.signInUsingEmailPassword(
+                                email: hpemailController.text,
+                                password: pwdController.text,
+                                context: context);
+                        print(result);
+                        if (result['user'] != null) {
+                          SimpleWidget.showDialogSuccess(
+                              context, 'title', 'content', () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop(false);
+                            Navigator.pushReplacementNamed(context, '/home');
+                          });
+                          print('>>> ${result['user']}');
+
+                          if (result['errorMessage'] != '') {
+                            // print('Error ===> ${result['errorMessage']}');
+                            SimpleWidget.showDialogFailed(
+                                context, result['errorMessage']);
+                          }
+                        }
+                        // Navigator.pushReplacementNamed(context, '/home');
+                        // User? user = await FireAuth.signInUsingEmailPassword(
+                        //     email: hpemailController.text,
+                        //     password: pwdController.text,
+                        //     context: context);
+
+                        // SimpleWidget.showDialogSuccess(
+                        //   context,
+                        //   'Login Success',
+                        //   'Content',
+                        //   () {
+                        //     Navigator.of(context, rootNavigator: true).pop(false);
+                        //   },
+                        // );
+                      }
+
+                      // result.then((value) {
+                      //   SimpleWidget.showDialogSuccess(
+                      //     context,
+                      //     'Login Success',
+                      //     'Content',
+                      //     () {
+                      //       Navigator.of(context, rootNavigator: true).pop(false);
+                      //     },
+                      //   );
+                      // });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      primary: Colors.green,
+                    ),
+                    child: const Text('DAFTAR'),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/forgotpwd');
+                        },
+                        child: const Text('Lupa Password ?'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
