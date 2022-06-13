@@ -14,3 +14,15 @@ class RegisterUserFireEvent extends FireuserEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+class LoginUserFireEvent extends FireuserEvent {
+  String email, password;
+
+  LoginUserFireEvent({
+    required this.email,
+    required this.password,
+  });
+
+  @override
+  List<Object> get props => [email, password];
+}

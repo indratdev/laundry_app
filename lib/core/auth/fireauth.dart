@@ -10,12 +10,13 @@ class FireAuth {
   static final fireCollMKios = _fireInstance.collection('member-kios');
 
   // register
-  static Future<User?> registerUsingEmailPassword({
+  static Future<Map<String, dynamic>> registerUsingEmailPassword({
     required String email,
     required String password,
   }) async {
     // FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
+    String errorMessage = '';
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -23,21 +24,21 @@ class FireAuth {
       // await user.reload();
       user = _auth.currentUser;
     } on FirebaseAuthException catch (e) {
-      String errorMessage = '';
-
       if (e.code == "weak-password") {
         // en : The Password provided is too weak
         errorMessage = 'Kata sandi yang diberikan terlalu lemah';
+        print(errorMessage);
       } else if (e.code == "email-already-in-use") {
         // en : The account already exists for that email
         errorMessage = 'Akun sudah terdaftar di sistem kami';
+        print(errorMessage);
       }
       // SimpleWidget.showDialogFailed(context, errorMessage);
     } catch (e) {
       print(e);
       // SimpleWidget.showDialogFailed(context, e.toString());
     }
-    return user;
+    return {"user": user, "errorMessage": errorMessage};
   }
 
   // register
@@ -77,7 +78,7 @@ class FireAuth {
   static Future<Map<String, dynamic>> signInUsingEmailPassword({
     required String email,
     required String password,
-    required BuildContext context,
+    // required BuildContext context,
   }) async {
     // FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
@@ -98,12 +99,14 @@ class FireAuth {
         errorMessage = 'Kata sandi yang diberikan salah.';
       }
       //show message error
-      SimpleWidget.showDialogFailed(context, errorMessage);
+      // SimpleWidget.showDialogFailed(context, errorMessage);
+    } catch (e) {
+      print(e);
     }
 
     return {
       "user": user,
-      // "errorMessage": errorMessage,
+      "errorMessage": errorMessage,
     };
   }
 

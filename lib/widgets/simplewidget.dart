@@ -54,10 +54,15 @@ class SimpleWidget {
                   FaIcon(
                     FontAwesomeIcons.check,
                     color: Colors.green,
-                    size: MediaQuery.of(context).size.width / 4,
+                    size: MediaQuery.of(context).size.width / 5,
                   ),
-                  SizedBox(height: 10),
-                  Text('Login Berhasil', style: TextStyle(fontSize: 12)),
+                  const SizedBox(height: 10),
+                  Text(title,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Center(child: Text(content, style: const TextStyle(fontSize: 12))),
                   ElevatedButton(
                     onPressed: function1,
                     child: const Text('OK'),

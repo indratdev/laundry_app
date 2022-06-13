@@ -11,31 +11,35 @@ class FireuserBloc extends Bloc<FireuserEvent, FireuserState> {
     on<RegisterUserFireEvent>((event, emit) async {
       try {
         emit(LoadingRegisterUserFireState());
-        User? user = await FireAuth.registerUsingEmailPassword(
+        Map<String, dynamic> result = await FireAuth.registerUsingEmailPassword(
             email: event.email, password: event.password);
-        emit(SuccessRegisterUserFireState(user: user));
+
+        if (result["errorMessage"] != '') {
+          emit(FailedRegisterUserFireState(
+              messageError: result["errorMessage"].toString()));
+        } else {
+          emit(SuccessRegisterUserFireState(user: result["user"]));
+        }
       } catch (e) {
         emit(FailedRegisterUserFireState(messageError: e.toString()));
       }
     });
+
+    on<LoginUserFireEvent>((event, emit) async {
+      try {
+        emit(LoadingLoginUserFireState());
+        Map<String, dynamic> result = await FireAuth.signInUsingEmailPassword(
+            email: event.email, password: event.password);
+
+        if (result['errorMessage'] != '') {
+          emit(FailedLoginUserFireState(
+              messageError: result["errorMessage"].toString()));
+        } else {
+          emit(SuccessLoginrUserFireState(user: result["user"]));
+        }
+      } catch (e) {
+        emit(FailedLoginUserFireState(messageError: e.toString()));
+      }
+    });
   }
 }
-
-
-
-// User? user = await FireAuth.registerUsingEmailPassword(
-//                             context: context,
-//                             email: _emailController.text,
-//                             password: _passwordController.text);
-
-//                         if (user?.uid != '' || user!.uid.isNotEmpty) {
-//                           return SimpleWidget.showDialogSuccess(
-//                               context,
-//                               'Sukses',
-//                               'Pendaftaran Pengguna Baru Berhasil', () {
-//                             _emailController.text = '';
-//                             _passwordController.text = '';
-//                             _passwordController2.text = '';
-//                             Navigator.of(context)
-//                                 .pushNamedAndRemoveUntil('/', (route) => false);
-//                           });
