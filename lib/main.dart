@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laundry_app/config/routes/routes.dart';
 import 'package:laundry_app/modules/bloc/bloc_master/master_bloc.dart';
+import 'package:laundry_app/modules/bloc/bloc_fireuser/fireuser_bloc.dart';
 
 void main() async {
   runApp(MyApp());
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => MasterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FireuserBloc(),
         ),
       ],
 

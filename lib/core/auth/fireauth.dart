@@ -11,7 +11,37 @@ class FireAuth {
 
   // register
   static Future<User?> registerUsingEmailPassword({
-    // required String laundryName,
+    required String email,
+    required String password,
+  }) async {
+    // FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      // await user!.updateDisplayName(laundryName);
+      // await user.reload();
+      user = _auth.currentUser;
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = '';
+
+      if (e.code == "weak-password") {
+        // en : The Password provided is too weak
+        errorMessage = 'Kata sandi yang diberikan terlalu lemah';
+      } else if (e.code == "email-already-in-use") {
+        // en : The account already exists for that email
+        errorMessage = 'Akun sudah terdaftar di sistem kami';
+      }
+      // SimpleWidget.showDialogFailed(context, errorMessage);
+    } catch (e) {
+      print(e);
+      // SimpleWidget.showDialogFailed(context, e.toString());
+    }
+    return user;
+  }
+
+  // register
+  static Future<User?> registerUsingEmailPassword2({
     required BuildContext context,
     required String email,
     required String password,
