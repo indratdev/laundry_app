@@ -1,7 +1,5 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:laundry_app/core/auth/fireauth.dart';
 import 'package:laundry_app/modules/bloc/bloc_fireuser/fireuser_bloc.dart';
 import 'package:laundry_app/utils/mixins/validation_mixin.dart';
 import 'package:laundry_app/widgets/simplewidget.dart';
@@ -16,8 +14,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final validationMixin = ValidationMixin();
-
-  // final _laundryNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordController2 = TextEditingController();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laundry_app/core/auth/fireauth.dart';
 import 'package:laundry_app/modules/bloc/bloc_fireuser/fireuser_bloc.dart';
+import 'package:laundry_app/modules/providers/fire_repository.dart';
 import 'package:laundry_app/utils/mixins/validation_mixin.dart';
 import 'package:laundry_app/widgets/simplewidget.dart';
 
@@ -155,8 +156,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         primary: Colors.green,
                       ),
                       child: const Text('DAFTAR'),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.pushNamed(context, '/register');
+
+                        // contoh buat check master laundry exist
+                        // var a = await FireRepository()
+                        //     .checkMasterLdy('OxpfdNL2EPfiBr7M7yYW1LzMWQX2');
+                        // print(a);
                       },
                     ),
                     Row(
